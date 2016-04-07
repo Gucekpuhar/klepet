@@ -3,17 +3,18 @@ function divElementEnostavniTekst(sporocilo) {
   
   var jeSlika = sporocilo.match(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/gi); 
   
-  
-  if (jeSlika) {
-      //sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
+   
+  if (jeSlika && !jeSmesko) {
+     
       return $('<div style="font-weight: bold;"></div>').html(sporocilo);
     
   }
+ 
   if (jeSmesko) {
-    //sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
+  
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
     
-  } else {
+  }  else {
     return $('<div style="font-weight: bold;"></div>').text(sporocilo);
   }
 }
@@ -131,7 +132,7 @@ $(document).ready(function() {
 function vstavljanjeSlik(text){
   link=text;
   text = text.replace(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/gi,"<img src='$1'  width='200px' style='margin-left:20px;' />");
-  vse =  text + link ;
+  vse = text + link ;
 
 
   return vse;
