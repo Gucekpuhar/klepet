@@ -72,11 +72,13 @@ $(document).ready(function() {
     $('#kanal').text(trenutniVzdevek + " @ " + trenutniKanal);
     $('#sporocila').append(divElementHtmlTekst('Sprememba kanala.'));
   });
-
+  
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
   });
+  
+
   
   socket.on('kanali', function(kanali) {
     $('#seznam-kanalov').empty();
@@ -100,11 +102,24 @@ $(document).ready(function() {
       $('#seznam-uporabnikov').append(divElementEnostavniTekst(uporabniki[i]));
     }
   });
+  
+
+
+
 
   setInterval(function() {
     socket.emit('kanali');
     socket.emit('uporabniki', {kanal: trenutniKanal});
   }, 1000);
+  
+   socket.on('dregljaj', function() {
+     
+        $('#vsebina').jrumble(); 
+        $('#vsebina').trigger('startRumble'); 
+        setTimeout(function(){ 
+           $('#vsebina').trigger('stopRumble'); 
+          }, 1500); 
+     });
 
   $('#poslji-sporocilo').focus();
 
@@ -113,8 +128,8 @@ $(document).ready(function() {
     return false;
   });
   
-  
 });
+
 
 function dodajSmeske(vhodnoBesedilo) {
   var preslikovalnaTabela = {
