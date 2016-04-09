@@ -9,7 +9,7 @@ function divElementEnostavniTekst(sporocilo) {
       return $('<div style="font-weight: bold;"></div>').html(sporocilo);
     
   }if (Youtube){
-    sporocilo = sporocilo.replace(/&lt;iframe/g, '<iframe').replace(/allowfullscreen&gt;&lt;\/iframe&gt;/g, 'allowfullscreen></iframe>');
+   
     return $('<div style="font-weight: bold;"></div>').html(sporocilo); 
     
   }
@@ -101,7 +101,14 @@ $(document).ready(function() {
     $('#sporocila').append(novElement);
   });
   
-
+  socket.on('dregljaj', function() {
+     
+        $('#vsebina').jrumble(); 
+        $('#vsebina').trigger('startRumble'); 
+        setTimeout(function(){ 
+           $('#vsebina').trigger('stopRumble'); 
+          }, 1500); 
+     });
   
   socket.on('kanali', function(kanali) {
     $('#seznam-kanalov').empty();
@@ -134,15 +141,6 @@ $(document).ready(function() {
     socket.emit('kanali');
     socket.emit('uporabniki', {kanal: trenutniKanal});
   }, 1000);
-  
-   socket.on('dregljaj', function() {
-     
-        $('#vsebina').jrumble(); 
-        $('#vsebina').trigger('startRumble'); 
-        setTimeout(function(){ 
-           $('#vsebina').trigger('stopRumble'); 
-          }, 1500); 
-     });
 
   $('#poslji-sporocilo').focus();
 
@@ -152,6 +150,8 @@ $(document).ready(function() {
   });
   
 });
+
+
 function vstavljanjeSlik(text){
   var link=text;
   text = text.replace(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/gi,"<img src='$1'  width='200px' style='margin-left:20px;' />");
@@ -200,6 +200,7 @@ function vstavljanjePosnetkov(text){
     
     
     text = text +"<iframe width='200px' height='150px' style='margin-left:20px;' src=https://www.youtube.com/embed/" + link + " allowfullscreen ></iframe>"; 
+    
   }
   
   return text;
