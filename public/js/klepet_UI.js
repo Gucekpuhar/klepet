@@ -1,12 +1,16 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
-  
+
   var jeSlika = sporocilo.match(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/gi); 
-  
+  var Youtube = sporocilo.indexOf('https://www.youtube.com/embed/') >-1; 
    
   if (jeSlika && !jeSmesko) {
      
       return $('<div style="font-weight: bold;"></div>').html(sporocilo);
+    
+  }if (Youtube){
+    sporocilo = sporocilo.replace(/&lt;iframe/g, '<iframe').replace(/allowfullscreen&gt;&lt;\/iframe&gt;/g, 'allowfullscreen></iframe>');
+    return $('<div style="font-weight: bold;"></div>').html(sporocilo); 
     
   }
  
@@ -15,6 +19,7 @@ function divElementEnostavniTekst(sporocilo) {
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
     
   }  else {
+
     return $('<div style="font-weight: bold;"></div>').text(sporocilo);
   }
 }
@@ -28,7 +33,11 @@ function divElementHtmlTekst(sporocilo) {
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
+
   sporocilo = vstavljanjeSlik(sporocilo);
+
+  sporocilo = vstavljanjePosnetkov(sporocilo); 
+
   var sistemskoSporocilo;
 
   if (sporocilo.charAt(0) == '/') {
@@ -138,6 +147,8 @@ function vstavljanjeSlik(text){
   return vse;
 }
 
+
+
 function dodajSmeske(vhodnoBesedilo) {
   var preslikovalnaTabela = {
     ";)": "wink.png",
@@ -155,9 +166,30 @@ function dodajSmeske(vhodnoBesedilo) {
 }
 
 
+
 $('#seznam-uporabnikov').click(function(vzd) {
     var vzdevek=$(vzd.target).text();
    
     $('#poslji-sporocilo').val('/zasebno "' + vzdevek + '"');
     $('#poslji-sporocilo').focus();
 });
+
+
+function vstavljanjePosnetkov(text){
+  
+  if (text.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]{11,11}).*/gi )){ 
+    
+    var link = text.slice(-11); 
+    
+     var naslov =text.match(/((https?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+/gi, '$1'); 
+    
+    
+    text = text +"<iframe width='200px' height='150px' style='margin-left:20px;' src=https://www.youtube.com/embed/" + link + " allowfullscreen ></iframe>"; 
+  }
+  
+  return text;
+  
+  
+  
+}
+
