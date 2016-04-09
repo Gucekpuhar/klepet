@@ -130,9 +130,9 @@ $(document).ready(function() {
   
 });
 function vstavljanjeSlik(text){
-  link=text;
+  var link=text;
   text = text.replace(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/gi,"<img src='$1'  width='200px' style='margin-left:20px;' />");
-  vse = text + link ;
+  var vse = text + link ;
 
 
   return vse;
