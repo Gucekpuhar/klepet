@@ -152,10 +152,12 @@ function vstavljanjePosnetkov(text){
   
   if (text.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]{11,11}).*/gi )){ 
     
-     var naslov =text.match(/((http(s)?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+/gi); 
+    var link = text.slice(-11); 
+    
+     var naslov =text.match(/((https?:\/\/)?)(www\.)?((youtube\.com\/)|(youtu.be\/))[\S]+/gi, '$1'); 
     
     
-    text = text +"<iframe width='200px' height='150px' style='margin-left:20px;' src='https://www.youtube.com/embed/" + naslov+ "' allowfullscreen ></iframe>"; 
+    text = text +"<iframe width='200px' height='150px' style='margin-left:20px;' src=https://www.youtube.com/embed/" + link + " allowfullscreen ></iframe>"; 
   }
   
   return text;
